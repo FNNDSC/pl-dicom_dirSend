@@ -4,14 +4,16 @@
 FROM docker.io/python:3.12.0-slim-bookworm
 
 LABEL org.opencontainers.image.authors="FNNDSC <dev@babyMRI.org>" \
-      org.opencontainers.image.title="ChRIS Plugin Title" \
-      org.opencontainers.image.description="A ChRIS plugin that..."
+      org.opencontainers.image.title="A ChRIS plugin to send DICOMS" \
+      org.opencontainers.image.description="A ChRIS plugin to send DICOMs to a remote PACS store"
 
-ARG SRCDIR=/usr/local/src/app
+ARG SRCDIR=/usr/local/src/pl-dicom_dirSend
 WORKDIR ${SRCDIR}
 
 COPY requirements.txt .
-RUN --mount=type=cache,sharing=private,target=/root/.cache/pip pip install -r requirements.txt
+RUN pip install -r requirements.txt
+RUN apt-get update \
+    && apt-get install dcmtk -y
 
 COPY . .
 ARG extras_require=none
@@ -19,4 +21,4 @@ RUN pip install ".[${extras_require}]" \
     && cd / && rm -rf ${SRCDIR}
 WORKDIR /
 
-CMD ["commandname"]
+CMD ["dicom_dirSend"]
