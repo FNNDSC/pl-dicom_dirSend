@@ -24,7 +24,7 @@ logger.remove()
 logger.opt(colors = True)
 logger.add(sys.stderr, format=logger_format)
 
-__version__ = '1.0.0'
+__version__ = '1.0.2'
 
 DISPLAY_TITLE = r"""
        _           _ _                          _ _      _____                _ 
@@ -38,18 +38,16 @@ DISPLAY_TITLE = r"""
 """ + "\t\t -- version " + __version__ + " --\n\n"
 
 
-parser = ArgumentParser(description='!!!CHANGE ME!!! An example ChRIS plugin which '
-                                    'counts the number of occurrences of a given '
-                                    'word in text files.',
+parser = ArgumentParser(description='A ChRIS plugin to send DICOMs to a remote PACS store',
                         formatter_class=ArgumentDefaultsHelpFormatter)
 parser.add_argument('-f', '--fileFilter', default='dcm', type=str,
                     help='input file filter glob')
 parser.add_argument('-n', '--host', default='0.0.0.0', type=str,
-                    help='input file filter glob')
+                    help='Host IP')
 parser.add_argument('-p', '--port', default='4242', type=str,
-                    help='input file filter glob')
+                    help='Host port')
 parser.add_argument('-a', '--aetTitle', default='CHRISLOCAL', type=str,
-                    help='input file filter glob')
+                    help='AET title')
 parser.add_argument('-V', '--version', action='version',
                     version=f'%(prog)s {__version__}')
 
@@ -111,8 +109,8 @@ def main(options: Namespace, inputdir: Path, outputdir: Path):
     shell = jobber({'verbosity': 1, 'noJobLogging': True})
     for input_file, output_file in mapper:
         LOG(f"Sending input file: ---->{input_file.name}<---- to {options.aetTitle}")
-        str_cmd = (f"storescu "
-                   f"-aet {options.aetTitle}"
+        str_cmd = (f"storescu"
+                   f" -aet {options.aetTitle}"
                    f" -aec {options.aetTitle}"
                    f" {options.host}"
                    f" {options.port}"
