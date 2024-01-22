@@ -24,13 +24,13 @@ setup(
     description='A ChRIS plugin to send DICOMs to a remote PACS store',
     author='FNNDSC',
     author_email='dev@babyMRI.org',
-    url='https://github.com/FNNDSC/pl-dicom_dir',
+    url='https://github.com/FNNDSC/pl-dicom_dirSend',
     py_modules=['dicom_dirSend','jobController'],
     install_requires=['chris_plugin'],
     license='MIT',
     entry_points={
         'console_scripts': [
-            'dicom_dirsend = dicom_dirSend:main'
+            'dicom_dirSend = dicom_dirSend:main'
         ]
     },
     classifiers=[

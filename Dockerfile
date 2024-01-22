@@ -21,4 +21,4 @@ RUN pip install ".[${extras_require}]" \
     && cd / && rm -rf ${SRCDIR}
 WORKDIR /
 
-CMD ["dicom_dirsend"]
+CMD ["dicom_dirSend"]
