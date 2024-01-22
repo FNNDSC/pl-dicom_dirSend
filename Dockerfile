@@ -7,7 +7,7 @@ LABEL org.opencontainers.image.authors="FNNDSC <dev@babyMRI.org>" \
       org.opencontainers.image.title="A ChRIS plugin to send DICOMS" \
       org.opencontainers.image.description="A ChRIS plugin to send DICOMs to a remote PACS store"
 
-ARG SRCDIR=/usr/local/src/pl-dicom_dirsend
+ARG SRCDIR=/usr/local/src/pl-dicom_dirSend
 WORKDIR ${SRCDIR}
 
 COPY requirements.txt .

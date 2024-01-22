@@ -19,18 +19,18 @@ def get_version(rel_path: str) -> str:
 
 
 setup(
-    name='dicom_dirsend',
-    version=get_version('dicom_dirsend.py'),
+    name='dicom_dirSend',
+    version=get_version('dicom_dirSend.py'),
     description='A ChRIS plugin to send DICOMs to a remote PACS store',
     author='FNNDSC',
     author_email='dev@babyMRI.org',
     url='https://github.com/FNNDSC/pl-dicom_dir',
-    py_modules=['dicom_dirsend','jobController'],
+    py_modules=['dicom_dirSend','jobController'],
     install_requires=['chris_plugin'],
     license='MIT',
     entry_points={
         'console_scripts': [
-            'dicom_dirsend = dicom_dirsend:main'
+            'dicom_dirsend = dicom_dirSend:main'
         ]
     },
     classifiers=[
