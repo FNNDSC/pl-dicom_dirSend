@@ -5,12 +5,13 @@
 [![ci](https://github.com/FNNDSC/pl-dicom_dirSend/actions/workflows/ci.yml/badge.svg)](https://github.com/FNNDSC/pl-dicom_dirSend/actions/workflows/ci.yml)
 
 `pl-dicom_dirSend` is a [_ChRIS_](https://chrisproject.org/)
-_ds_ plugin which takes in ...  as input files and
-creates ... as output files.
+_ds_ plugin which takes in DICOMs  as input files and
+sends them to a remote PACS store.
 
 ## Abstract
 
-...
+``pl-dicom_dirSend`` is a plugin that uses `dcmtk` tools such as `storescu` to send 
+DICOM files from an incoming directory to a remote PACS server.
 
 ## Installation
 
