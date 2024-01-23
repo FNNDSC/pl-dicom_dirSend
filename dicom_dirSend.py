@@ -24,7 +24,7 @@ logger.remove()
 logger.opt(colors = True)
 logger.add(sys.stderr, format=logger_format)
 
-__version__ = '1.1.0'
+__version__ = '1.1.2'
 
 DISPLAY_TITLE = r"""
        _           _ _                          _ _      _____                _ 
@@ -50,6 +50,11 @@ parser.add_argument('-a', '--aetTitle', default='CHRISLOCAL', type=str,
                     help='AET title')
 parser.add_argument('-V', '--version', action='version',
                     version=f'%(prog)s {__version__}')
+parser.add_argument(  '--pftelDB',
+                    dest        = 'pftelDB',
+                    default     = '',
+                    type        = str,
+                    help        = 'optional pftel server DB path')
 
 
 def preamble_show(options) -> None:
@@ -81,6 +86,10 @@ def preamble_show(options) -> None:
     min_memory_limit='100Mi',    # supported units: Mi, Gi
     min_cpu_limit='1000m',       # millicores, e.g. "1000m" = 1 CPU core
     min_gpu_limit=0              # set min_gpu_limit=1 to enable GPU
+)
+@pflog.tel_logTime(
+            event       = 'dicom_dirSend',
+            log         = 'Send DICOM files to a remote PACS'
 )
 def main(options: Namespace, inputdir: Path, outputdir: Path):
     """
