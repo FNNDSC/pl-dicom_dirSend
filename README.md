@@ -1,6 +1,6 @@
 # A ChRIS plugin to send DICOMS
 
-[![Version](https://img.shields.io/docker/v/fnndsc/pl-dicom_dirSend?sort=semver)](https://hub.docker.com/r/fnndsc/pl-dicom_dirSend)
+[![Version](https://img.shields.io/docker/v/fnndsc/pl-dicom_dirsend?sort=semver)](https://hub.docker.com/r/fnndsc/pl-dicom_dirsend)
 [![MIT License](https://img.shields.io/github/license/fnndsc/pl-dicom_dirSend)](https://github.com/FNNDSC/pl-dicom_dirSend/blob/main/LICENSE)
 [![ci](https://github.com/FNNDSC/pl-dicom_dirSend/actions/workflows/ci.yml/badge.svg)](https://github.com/FNNDSC/pl-dicom_dirSend/actions/workflows/ci.yml)
 
