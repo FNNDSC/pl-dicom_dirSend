@@ -24,7 +24,7 @@ logger.remove()
 logger.opt(colors = True)
 logger.add(sys.stderr, format=logger_format)
 
-__version__ = '1.1.2'
+__version__ = '1.1.4'
 
 DISPLAY_TITLE = r"""
        _           _ _                          _ _      _____                _ 
@@ -129,10 +129,9 @@ def main(options: Namespace, inputdir: Path, outputdir: Path):
         LOG(f"Command: {d_response['cmd']}")
         if d_response['returncode']:
             LOG(f"Error: {d_response["stderr"]}")
+            raise Exception(d_response["stderr"])
         else:
             LOG("Response: Success\n")
-
-
 
 
 if __name__ == '__main__':
