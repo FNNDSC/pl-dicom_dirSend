@@ -24,7 +24,7 @@ logger.remove()
 logger.opt(colors = True)
 logger.add(sys.stderr, format=logger_format)
 
-__version__ = '1.1.4'
+__version__ = '1.1.6'
 
 DISPLAY_TITLE = r"""
        _           _ _                          _ _      _____                _ 
@@ -118,7 +118,7 @@ def main(options: Namespace, inputdir: Path, outputdir: Path):
     shell = jobber({'verbosity': 1, 'noJobLogging': True})
     for input_file, output_file in mapper:
         LOG(f"Sending input file: ---->{input_file.name}<---- to {options.aetTitle}")
-        str_cmd = (f"storescu"
+        str_cmd = (f"dcmsend"
                    f" -aet {options.aetTitle}"
                    f" -aec {options.aetTitle}"
                    f" {options.host}"
