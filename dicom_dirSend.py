@@ -24,7 +24,7 @@ logger.remove()
 logger.opt(colors = True)
 logger.add(sys.stderr, format=logger_format)
 
-__version__ = '1.1.7'
+__version__ = '1.1.8'
 
 DISPLAY_TITLE = r"""
        _           _ _                          _ _      _____                _ 
@@ -46,8 +46,10 @@ parser.add_argument('-n', '--host', default='0.0.0.0', type=str,
                     help='Host IP')
 parser.add_argument('-p', '--port', default='4242', type=str,
                     help='Host port')
-parser.add_argument('-a', '--aetTitle', default='CHRISLOCAL', type=str,
+parser.add_argument('-a', '--aeTitle', default='ChRIS', type=str,
                     help='AET title')
+parser.add_argument('-c', '--calledAETitle', default='CHRISLOCAL', type=str,
+                    help='called AET title of peer')
 parser.add_argument('-V', '--version', action='version',
                     version=f'%(prog)s {__version__}')
 parser.add_argument(  '--pftelDB',
@@ -119,8 +121,8 @@ def main(options: Namespace, inputdir: Path, outputdir: Path):
     for input_file, output_file in mapper:
         LOG(f"Sending input file: ---->{input_file.name}<---- to {options.aetTitle}")
         str_cmd = (f"dcmsend"
-                   f" -aet {options.aetTitle}"
-                   f" -aec {options.aetTitle}"
+                   f" -aet {options.aeTitle}"
+                   f" -aec {options.calledAETitle}"
                    f" {options.host}"
                    f" {options.port}"
                    f" {str(input_file)}")
