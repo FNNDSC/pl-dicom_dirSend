@@ -24,7 +24,7 @@ logger.remove()
 logger.opt(colors = True)
 logger.add(sys.stderr, format=logger_format)
 
-__version__ = '1.1.8'
+__version__ = '1.1.9'
 
 DISPLAY_TITLE = r"""
        _           _ _                          _ _      _____                _ 
@@ -47,9 +47,9 @@ parser.add_argument('-n', '--host', default='0.0.0.0', type=str,
 parser.add_argument('-p', '--port', default='4242', type=str,
                     help='Host port')
 parser.add_argument('-a', '--aeTitle', default='ChRIS', type=str,
-                    help='AET title')
+                    help='my AE title')
 parser.add_argument('-c', '--calledAETitle', default='CHRISLOCAL', type=str,
-                    help='called AET title of peer')
+                    help='called AE title of peer')
 parser.add_argument('-V', '--version', action='version',
                     version=f'%(prog)s {__version__}')
 parser.add_argument(  '--pftelDB',

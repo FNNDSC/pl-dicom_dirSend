@@ -2,6 +2,7 @@
 # FROM python:3.8
 # FROM ghcr.io/mamba-org/micromamba:1.5.1-focal-cuda-11.3.1
 FROM docker.io/python:3.12.0-slim-bookworm
+RUN ln -sf /usr/share/zoneinfo/America/New_York /etc/timezone
 
 LABEL org.opencontainers.image.authors="FNNDSC <dev@babyMRI.org>" \
       org.opencontainers.image.title="A ChRIS plugin to send DICOMS" \
