@@ -24,7 +24,7 @@ logger.remove()
 logger.opt(colors = True)
 logger.add(sys.stderr, format=logger_format)
 
-__version__ = '1.1.9'
+__version__ = '1.2.0'
 
 DISPLAY_TITLE = r"""
        _           _ _                          _ _      _____                _ 
@@ -119,7 +119,7 @@ def main(options: Namespace, inputdir: Path, outputdir: Path):
     mapper = PathMapper.file_mapper(inputdir, outputdir, glob=f"**/*.{options.fileFilter}",fail_if_empty=False)
     shell = jobber({'verbosity': 1, 'noJobLogging': True})
     for input_file, output_file in mapper:
-        LOG(f"Sending input file: ---->{input_file.name}<---- to {options.aetTitle}")
+        LOG(f"Sending input file: ---->{input_file.name}<---- to {options.calledAETitle}")
         str_cmd = (f"dcmsend"
                    f" -aet {options.aeTitle}"
                    f" -aec {options.calledAETitle}"
