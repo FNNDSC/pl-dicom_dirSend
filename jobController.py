@@ -133,7 +133,8 @@ class jobber:
         d_ret['cmd']        = str_cmd
         d_ret['cwd']        = os.getcwd()
         d_ret['stdout']     = str_stdout
-        d_ret['stderr']     = p.stderr.read().decode()
+        d_ret['stderr']     = p.stderr.read().decode('utf-8', errors='replace')
+        # d_ret['stderr']     = p.stderr.read().decode()
         d_ret['returncode'] = p.returncode
         if int(self.args['verbosity']) and len(d_ret['stderr']):
             print('\nstderr: \n%s' % d_ret['stderr'])

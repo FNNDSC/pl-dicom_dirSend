@@ -5,8 +5,6 @@ from argparse import ArgumentParser, Namespace, ArgumentDefaultsHelpFormatter
 from jobController import jobber
 from chris_plugin import chris_plugin, PathMapper
 from    loguru              import logger
-from    pftag               import pftag
-from    pflog               import pflog
 from    datetime            import datetime
 import sys
 import os
@@ -52,11 +50,6 @@ parser.add_argument('-c', '--calledAETitle', default='CHRISLOCAL', type=str,
                     help='called AE title of peer')
 parser.add_argument('-V', '--version', action='version',
                     version=f'%(prog)s {__version__}')
-parser.add_argument(  '--pftelDB',
-                    dest        = 'pftelDB',
-                    default     = '',
-                    type        = str,
-                    help        = 'optional pftel server DB path')
 
 
 def preamble_show(options) -> None:
@@ -89,10 +82,6 @@ def preamble_show(options) -> None:
     min_cpu_limit='1000m',       # millicores, e.g. "1000m" = 1 CPU core
     min_gpu_limit=0              # set min_gpu_limit=1 to enable GPU
 )
-@pflog.tel_logTime(
-            event       = 'dicom_dirSend',
-            log         = 'Send DICOM files to a remote PACS'
-)
 def main(options: Namespace, inputdir: Path, outputdir: Path):
     """
     *ChRIS* plugins usually have two positional arguments: an **input directory** containing
@@ -118,22 +107,21 @@ def main(options: Namespace, inputdir: Path, outputdir: Path):
     logger.add(log_file)
     mapper = PathMapper.file_mapper(inputdir, outputdir, glob=f"**/*.{options.fileFilter}",fail_if_empty=False)
     shell = jobber({'verbosity': 1, 'noJobLogging': True})
-    for input_file, output_file in mapper:
-        LOG(f"Sending input file: ---->{input_file.name}<---- to {options.calledAETitle}")
-        str_cmd = (f"dcmsend"
-                   f" -aet {options.aeTitle}"
-                   f" -aec {options.calledAETitle}"
-                   f" {options.host}"
-                   f" {options.port}"
-                   f" {str(input_file)}")
+    str_cmd = (f"dcmsend"
+               f" -aet {options.aeTitle}"
+               f" -aec {options.calledAETitle}"
+               f" {options.host}"
+               f" {options.port}"
+               f" -v +r +sd +sp *{options.fileFilter}"
+               f" {str(inputdir)}")
 
-        d_response = shell.job_run(str_cmd)
-        LOG(f"Command: {d_response['cmd']}")
-        if d_response['returncode']:
-            LOG(f"Error: {d_response["stderr"]}")
-            raise Exception(d_response["stderr"])
-        else:
-            LOG("Response: Success\n")
+    d_response = shell.job_run(str_cmd)
+    LOG(f"Command: {d_response['cmd']}")
+    if d_response['returncode']:
+        LOG(f"Error: {d_response["stderr"]}")
+        raise Exception(d_response["stderr"])
+    else:
+        LOG("Response: Success\n")
 
 
 if __name__ == '__main__':
