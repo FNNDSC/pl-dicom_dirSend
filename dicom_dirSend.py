@@ -22,7 +22,7 @@ logger.remove()
 logger.opt(colors = True)
 logger.add(sys.stderr, format=logger_format)
 
-__version__ = '1.2.0'
+__version__ = '1.2.1'
 
 DISPLAY_TITLE = r"""
        _           _ _                          _ _      _____                _ 
@@ -47,6 +47,8 @@ parser.add_argument('-p', '--port', default='4242', type=str,
 parser.add_argument('-a', '--aeTitle', default='ChRIS', type=str,
                     help='my AE title')
 parser.add_argument('-c', '--calledAETitle', default='CHRISLOCAL', type=str,
+                    help='called AE title of peer')
+parser.add_argument('-s', '--singleInstanceMode', default=False, action="store_true",
                     help='called AE title of peer')
 parser.add_argument('-V', '--version', action='version',
                     version=f'%(prog)s {__version__}')
@@ -105,23 +107,61 @@ def main(options: Namespace, inputdir: Path, outputdir: Path):
     # lets create a log file in the o/p directory first
     log_file = os.path.join(options.outputdir, 'terminal.log')
     logger.add(log_file)
-    mapper = PathMapper.file_mapper(inputdir, outputdir, glob=f"**/*.{options.fileFilter}",fail_if_empty=False)
     shell = jobber({'verbosity': 1, 'noJobLogging': True})
-    str_cmd = (f"dcmsend"
-               f" -aet {options.aeTitle}"
-               f" -aec {options.calledAETitle}"
-               f" {options.host}"
-               f" {options.port}"
-               f" -v +r +sd +sp *{options.fileFilter}"
-               f" {str(inputdir)}")
 
-    d_response = shell.job_run(str_cmd)
-    LOG(f"Command: {d_response['cmd']}")
-    if d_response['returncode']:
-        LOG(f"Error: {d_response["stderr"]}")
-        raise Exception(d_response["stderr"])
+    base_cmd = build_dcmsend_base(options)
+    mapper = PathMapper.file_mapper(
+        inputdir,
+        outputdir,
+        glob=f"**/*.{options.fileFilter}",
+        fail_if_empty=False
+    )
+
+    # Send a single DICOM per association
+    if options.singleInstanceMode:
+        for input_file, _ in mapper:
+            LOG(f"Sending input file: ---->{input_file.name}<---- to {options.calledAETitle}")
+
+            cmd = f"{base_cmd} {input_file}"
+            try:
+                run_dcmsend(shell, cmd)
+            except Exception as e:
+                continue
+
+    # Future goals: 1) Implement max PDU and disable-host-lookup
     else:
-        LOG("Response: Success\n")
+        LOG(f"Sending: ---->{len(mapper)} DICOMs<---- to {options.calledAETitle}")
+        cmd = (
+            f"{base_cmd} "
+            f"-q +r +sd +sp *{options.fileFilter} "
+            f"{inputdir}"
+        )
+
+        run_dcmsend(shell, cmd)
+
+def run_dcmsend(shell,cmd: str):
+    """Execute dcmsend command and handle logging/errors."""
+    d_response = shell.job_run(cmd)
+
+    LOG(f"Command: {d_response['cmd']}")
+
+    if d_response["returncode"]:
+        LOG(f"Error: {d_response['stderr']}")
+        raise RuntimeError(d_response["stderr"])
+
+    LOG("Response: Success\n")
+
+
+def build_dcmsend_base(options):
+    """Base dcmsend command."""
+    return (
+        f"dcmsend "
+        f"-aet {options.aeTitle} "
+        f"-aec {options.calledAETitle} "
+        f"{options.host} "
+        f"{options.port}"
+    )
+
 
 
 if __name__ == '__main__':

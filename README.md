@@ -10,8 +10,9 @@ sends them to a remote PACS store.
 
 ## Abstract
 
-``pl-dicom_dirSend`` is a plugin that uses `dcmtk` tools such as `storescu` to send 
-DICOM files from an incoming directory to a remote PACS server.
+``pl-dicom_dirSend`` is a plugin that uses `dcmtk` tools such as `dcmsend` to send 
+DICOM files from an incoming directory to a remote PACS server. It supports sending 
+files in bulk as well as single instances per association.
 
 ## Installation
 
